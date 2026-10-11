@@ -1,0 +1,130 @@
+
+#include <stdio.h>
+
+// Function declarations
+float calculateAverage(float grades[], int size);
+void displayReport(char name[], char section[], float grades[], float average);
+
+int main() {
+    char name[50];
+    char section[20];
+    float grades[8];
+    float average;
+    int choice;
+    int i;
+    int ch;
+
+    do {
+        printf("\n==============================\n");
+        printf(" STUDENT GRADE MANAGEMENT SYSTEM\n");
+        printf("==============================\n");
+        printf("1. Enter Student Grades\n");
+        printf("2. Exit\n");
+        printf("Enter your choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input. Enter 1 or 2.\n");
+
+            while ((ch = getchar()) != '\n' && ch != EOF) {
+            }
+
+            choice = 0;
+            continue;
+        }
+
+        switch (choice) {
+            case 1:
+                printf("\nEnter student name: ");
+                scanf(" %49[^\n]", name);
+
+                printf("Enter section: ");
+                scanf(" %19[^\n]", section);
+
+                for (i = 0; i < 8; i++) {
+                    printf("Enter grade for Subject %d (0-100): ",
+                           i + 1);
+
+                    while (1) {
+                        if (scanf("%f", &grades[i]) != 1) {
+                            printf("Please enter a number: ");
+
+                            while ((ch = getchar()) != '\n' &&
+                                   ch != EOF) {
+                            }
+                        } else if (grades[i] < 0 ||
+                                   grades[i] > 100) {
+                            printf("Invalid grade! Enter 0-100: ");
+                        } else {
+                            break;
+                        }
+                    }
+
+                    if (grades[i] >= 75) {
+                        printf("Passing grade\n");
+                    } else {
+                        printf("Below passing grade\n");
+                    }
+                }
+
+                average = calculateAverage(grades, 8);
+                displayReport(name, section, grades, average);
+                break;
+
+            case 2:
+                printf("\nThank you for using the system!\n");
+                break;
+
+            default:
+                printf("\nInvalid choice. Please try again.\n");
+        }
+
+    } while (choice != 2);
+
+    return 0;
+}
+
+float calculateAverage(float grades[], int size) {
+    float sum = 0;
+    int i;
+
+    for (i = 0; i < size; i++) {
+        sum = sum + grades[i];
+    }
+
+    return sum / size;
+}
+
+void displayReport(char name[], char section[], float grades[], float average) {
+    int i;
+
+    printf("\n==============================\n");
+    printf("       STUDENT REPORT\n");
+    printf("==============================\n");
+    printf("Student Name: %s\n", name);
+    printf("Section: %s\n", section);
+
+    for (i = 0; i < 8; i++) {
+        printf("Subject %d Grade: %.2f\n",
+               i + 1, grades[i]);
+    }
+
+    printf("Average: %.2f\n", average);
+
+    if (average >= 75) {
+        printf("Final Result: PASSED\n");
+    } else {
+        printf("Final Result: FAILED\n");
+    }
+
+    if (average >= 90) {
+        printf("Remark: Excellent\n");
+    } else if (average >= 85) {
+        printf("Remark: Very Good\n");
+    } else if (average >= 75) {
+        printf("Remark: Good\n");
+    } else {
+        printf("Remark: Needs Improvement\n");
+    }
+
+    printf("==============================\n");
+}
